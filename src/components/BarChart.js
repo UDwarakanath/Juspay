@@ -35,7 +35,7 @@ function ProjectionsBarChart() {
         <Typography variant="h6" gutterBottom color="textPrimary">
           Projections vs Actuals
         </Typography>
-        <Box sx={{ height: 160, mt: 2 }}>
+        <Box sx={{ height: 150, mt: 2 }}>
           {" "}
           {/* Reduced height to 200 */}
           <ResponsiveContainer width="100%" height="100%">

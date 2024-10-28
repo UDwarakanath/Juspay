@@ -6,6 +6,8 @@ import {
   Drawer,
   Typography,
   Divider,
+  useMediaQuery,
+  Grid,
 } from "@mui/material";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { lightTheme, darkTheme } from "./theme";
@@ -20,6 +22,9 @@ function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const isMobile = useMediaQuery("(max-width: 600px)");
+  const isTablet = useMediaQuery("(max-width: 960px)");
 
   const handleThemeChange = useCallback(() => {
     setIsDarkMode((prevMode) => !prevMode);
@@ -47,11 +52,11 @@ function App() {
               flexGrow: 1,
               display: "flex",
               flexDirection: "column",
-              maxWidth: "100%",
-              width: `calc(100% - ${isNotificationOpen ? "400px" : "0px"} - ${
-                isSidebarOpen ? "240px" : "0px"
-              })`,
               transition: "width 0.3s ease",
+              width: `calc(100% - ${
+                isNotificationOpen ? (isMobile ? "100%" : "400px") : "0px"
+              } - ${isSidebarOpen ? (isMobile ? "100%" : "240px") : "0px"})`,
+              maxWidth: "100%",
             }}
           >
             {/* Top Navigation Bar */}
@@ -63,17 +68,30 @@ function App() {
             />
 
             {/* Main Content */}
-            <Box sx={{ p: 3, overflowY: "auto" }}>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/ecommerce/orders" element={<OrderList />} />
-                <Route path="/statistics" element={<Statistics />} />
-                {/* Fallback route for unmatched paths */}
-                <Route
-                  path="*"
-                  element={<Typography variant="h6">404 Not Found</Typography>}
-                />
-              </Routes>
+            <Box
+              sx={{
+                p: 3,
+                overflowY: "auto",
+                padding: isMobile ? "16px 8px" : "24px",
+                flexGrow: 1,
+              }}
+            >
+              <Grid container spacing={3}>
+                <Grid item xs={12}>
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/ecommerce/orders" element={<OrderList />} />
+                    <Route path="/statistics" element={<Statistics />} />
+                    {/* Fallback route for unmatched paths */}
+                    <Route
+                      path="*"
+                      element={
+                        <Typography variant="h6">404 Not Found</Typography>
+                      }
+                    />
+                  </Routes>
+                </Grid>
+              </Grid>
             </Box>
           </Box>
 
@@ -82,18 +100,26 @@ function App() {
             anchor="right"
             open={isNotificationOpen}
             onClose={toggleNotificationDrawer}
+            PaperProps={{
+              sx: {
+                width: isMobile ? "100%" : "400px", // Full width on mobile
+              },
+            }}
           >
             <Box
-              sx={{ width: 400 }}
+              sx={{
+                width: "100%",
+                height: "100%",
+                overflow: "auto",
+                p: isMobile ? 2 : 3,
+              }}
               role="presentation"
               onClick={toggleNotificationDrawer}
               onKeyDown={(e) => {
                 if (e.key === "Escape") toggleNotificationDrawer();
               }}
             >
-              <Typography variant="h6" sx={{ p: 2 }}>
-                Notifications
-              </Typography>
+              <Typography variant="h6">Notifications</Typography>
               <Divider />
               <RightSidebar />
             </Box>
