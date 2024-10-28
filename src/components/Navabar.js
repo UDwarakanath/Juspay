@@ -16,6 +16,7 @@ import {
   Search as SearchIcon,
   Menu as MenuIcon,
 } from "@mui/icons-material";
+import { useLocation } from "react-router-dom";
 
 const AppBarComponent = ({
   isDarkMode,
@@ -24,11 +25,23 @@ const AppBarComponent = ({
   toggleSidebar,
   unreadNotifications,
 }) => {
+  const location = useLocation();
   const [searchValue, setSearchValue] = React.useState("");
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
   };
+
+  // Extract and format the route path to display
+  const formatPath = (path) => {
+    return path
+      .split("/")
+      .filter(Boolean) // Remove empty parts
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .join(" / ");
+  };
+
+  const currentRoute = formatPath(location.pathname);
 
   return (
     <AppBar
@@ -70,7 +83,7 @@ const AppBarComponent = ({
             >
               <StarBorder />
             </IconButton>
-            Dashboards / Default
+            {currentRoute || "dashboard / default"}
           </Typography>
         </Box>
         <Box
