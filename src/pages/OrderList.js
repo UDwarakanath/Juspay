@@ -319,7 +319,7 @@ function OrderList() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <FormControl size="small">
-            <InputLabel>Status</InputLabel>
+            <InputLabel shrink>Status</InputLabel>
             <Select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
@@ -336,6 +336,7 @@ function OrderList() {
               ))}
             </Select>
           </FormControl>
+          ``
         </Box>
       </Box>
 
