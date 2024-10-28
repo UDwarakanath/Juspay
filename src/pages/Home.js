@@ -1,6 +1,6 @@
 // src/pages/Home.js
 import React from "react";
-import { Container, Grid } from "@mui/material";
+import { Container } from "@mui/material";
 import Statistics from "./Statistics";
 
 function Home() {
