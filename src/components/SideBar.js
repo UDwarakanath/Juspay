@@ -13,6 +13,8 @@ import {
   Avatar,
   useTheme,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FolderIcon from "@mui/icons-material/Folder";
@@ -91,7 +93,7 @@ const sidebarSections = [
 const SidebarSection = ({ section }) => {
   const [openSubmenus, setOpenSubmenus] = useState({});
   const theme = useTheme();
-
+  const navigate = useNavigate();
   const toggleSubmenu = (itemText) => {
     setOpenSubmenus((prev) => ({
       ...prev,
@@ -124,7 +126,7 @@ const SidebarSection = ({ section }) => {
                 if (Array.isArray(item.submenu) && item.submenu.length > 0) {
                   toggleSubmenu(item.text);
                 } else {
-                  window.location.href = item.path;
+                  navigate(item.path);
                 }
               }}
               sx={{

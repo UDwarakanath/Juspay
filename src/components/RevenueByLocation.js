@@ -1,5 +1,11 @@
 import React from "react";
-import { Box, Typography, LinearProgress, useTheme } from "@mui/material";
+import {
+  Box,
+  Typography,
+  LinearProgress,
+  useTheme,
+  Tooltip,
+} from "@mui/material";
 import {
   ComposableMap,
   Geographies,
@@ -14,6 +20,7 @@ const locations = [
   { name: "Singapore", revenue: 61000, coordinates: [103.8198, 1.3521] },
 ];
 
+const REVENUE_CAP = 100000; // Revenue cap for progress calculation
 const geoUrl =
   "https://naturalearth.s3.amazonaws.com/110m_cultural/ne_110m_admin_0_countries.geojson";
 
@@ -56,8 +63,19 @@ const RevenueByLocation = () => {
           </Geographies>
           {locations.map(({ name, revenue, coordinates }) => (
             <Marker key={name} coordinates={coordinates}>
-              <circle r={5} fill={theme.palette.customRevenue.locationMarker} />
-              <text textAnchor="middle" fill="#FFFFFF" fontSize={12} dy={-10}>
+              <Tooltip title={`${name}: $${revenue.toLocaleString()}K`} arrow>
+                <circle
+                  r={5}
+                  fill={theme.palette.customRevenue.locationMarker}
+                />
+              </Tooltip>
+              <text
+                textAnchor="middle"
+                fill="#FFFFFF"
+                fontSize={12}
+                dy={-10}
+                style={{ pointerEvents: "none" }}
+              >
                 {name}
               </text>
             </Marker>
@@ -74,7 +92,7 @@ const RevenueByLocation = () => {
           </Typography>
           <LinearProgress
             variant="determinate"
-            value={(location.revenue / 100000) * 100}
+            value={(location.revenue / REVENUE_CAP) * 100}
             sx={{
               backgroundColor: theme.palette.customStatsCard.negative,
               "& .MuiLinearProgress-bar": {

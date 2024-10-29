@@ -12,39 +12,88 @@ import {
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { lightTheme, darkTheme } from "./theme";
 import Home from "./pages/Home";
-import Statistics from "./pages/Statistics";
 import RightSidebar from "./components/RightSideBar";
 import Sidebar from "./components/SideBar";
 import AppBarComponent from "./components/Navabar";
 import OrderList from "./pages/OrderList";
 
-function App() {
+// Custom hook to toggle theme
+const useThemeToggle = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const toggleTheme = useCallback(() => {
+    setIsDarkMode((prev) => !prev);
+  }, []);
+  return { isDarkMode, toggleTheme };
+};
+
+// Custom hook to manage notification drawer state
+const useNotificationDrawer = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleDrawer = useCallback(() => {
+    setIsOpen((prev) => !prev);
+  }, []);
+  return { isOpen, toggleDrawer };
+};
+
+// Custom hook to manage sidebar state
+const useSidebarToggle = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleSidebar = useCallback(() => {
+    setIsOpen((prev) => !prev);
+  }, []);
+  return { isOpen, toggleSidebar };
+};
+
+// Error Boundary component
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    // Update state so the next render shows the fallback UI.
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, info) {
+    // Log the error to an error reporting service
+    console.error("Error caught in ErrorBoundary:", error);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <Typography variant="h6">Something went wrong.</Typography>;
+    }
+
+    return this.props.children;
+  }
+}
+
+function App() {
+  const { isDarkMode, toggleTheme } = useThemeToggle();
+  const { isOpen: isNotificationOpen, toggleDrawer: toggleNotificationDrawer } =
+    useNotificationDrawer();
+  const { isOpen: isSidebarOpen, toggleSidebar } = useSidebarToggle();
 
   const isMobile = useMediaQuery("(max-width: 600px)");
-  const isTablet = useMediaQuery("(max-width: 960px)");
 
-  const handleThemeChange = useCallback(() => {
-    setIsDarkMode((prevMode) => !prevMode);
-  }, []);
-
-  const toggleNotificationDrawer = useCallback(() => {
-    setIsNotificationOpen((prev) => !prev);
-  }, []);
-
-  const toggleSidebar = useCallback(() => {
-    setIsSidebarOpen((prev) => !prev);
-  }, []);
+  // Define routes
+  const routes = [
+    { path: "/", element: <Home /> },
+    { path: "/ecommerce/orders", element: <OrderList /> },
+    { path: "*", element: <Typography variant="h6">404 Not Found</Typography> },
+  ];
 
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
       <CssBaseline />
       <Router>
         <Box display="flex" height="100vh">
-          {/* Sidebar (Left) */}
-          <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+          {/* Sidebar */}
+          {isSidebarOpen && (
+            <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+          )}
 
           <Box
             component="main"
@@ -62,7 +111,7 @@ function App() {
             {/* Top Navigation Bar */}
             <AppBarComponent
               isDarkMode={isDarkMode}
-              handleThemeChange={handleThemeChange}
+              handleThemeChange={toggleTheme}
               toggleNotificationDrawer={toggleNotificationDrawer}
               toggleSidebar={toggleSidebar}
             />
@@ -78,18 +127,17 @@ function App() {
             >
               <Grid container spacing={3}>
                 <Grid item xs={12}>
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/ecommerce/orders" element={<OrderList />} />
-                    <Route path="/statistics" element={<Statistics />} />
-                    {/* Fallback route for unmatched paths */}
-                    <Route
-                      path="*"
-                      element={
-                        <Typography variant="h6">404 Not Found</Typography>
-                      }
-                    />
-                  </Routes>
+                  <ErrorBoundary>
+                    <Routes>
+                      {routes.map((route, index) => (
+                        <Route
+                          key={index}
+                          path={route.path}
+                          element={route.element}
+                        />
+                      ))}
+                    </Routes>
+                  </ErrorBoundary>
                 </Grid>
               </Grid>
             </Box>
@@ -102,7 +150,7 @@ function App() {
             onClose={toggleNotificationDrawer}
             PaperProps={{
               sx: {
-                width: isMobile ? "100%" : "400px", // Full width on mobile
+                width: isMobile ? "100%" : "400px",
               },
             }}
           >

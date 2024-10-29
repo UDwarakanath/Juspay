@@ -10,6 +10,7 @@ const salesData = [
   { name: "E-mail", value: 48.96 },
 ];
 
+// Styled components for the legend container and items
 const LegendContainer = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
@@ -44,6 +45,9 @@ const TotalSalesDonutChart = () => {
     "#ffc658",
     "#d0ed57",
   ];
+
+  // Calculate the total for dynamic percentage
+  const totalSales = salesData.reduce((acc, data) => acc + data.value, 0);
 
   return (
     <Paper
@@ -87,7 +91,10 @@ const TotalSalesDonutChart = () => {
               ))}
             </Pie>
             <Tooltip
-              formatter={(value) => `${((value / 638.72) * 100).toFixed(1)}%`}
+              formatter={(value, name) => [
+                `${((value / totalSales) * 100).toFixed(1)}%`,
+                `${name}: $${value.toFixed(2)}`,
+              ]}
               contentStyle={{
                 backgroundColor: theme.palette.background.paper,
                 color: theme.palette.text.primary,

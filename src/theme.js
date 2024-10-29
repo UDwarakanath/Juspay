@@ -1,20 +1,36 @@
 import { createTheme } from "@mui/material/styles";
 import { grey } from "@mui/material/colors";
 
+// Common typography configuration
+const typography = {
+  fontFamily: '"Inter", "Helvetica", "Arial", sans-serif',
+  fontSize: 14,
+  lineHeight: 1.43,
+};
+
+// Common colors
+const commonColors = {
+  primaryMain: "#1976d2",
+  primaryLight: "#90caf9",
+  backgroundDefault: "#ffff",
+  backgroundPaper: "#f5f7fa",
+  chartLine: "#1976d2",
+  locationMarker: "#1976d2",
+  headerBackground: "#e0e0e0",
+  headerText: grey[800],
+};
+
+// Light Theme
 export const lightTheme = createTheme({
-  typography: {
-    fontFamily: '"Inter", "Helvetica", "Arial", sans-serif',
-    fontSize: 14,
-    lineHeight: 1.43,
-  },
+  typography,
   palette: {
     mode: "light",
     primary: {
-      main: "#1976d2",
+      main: commonColors.primaryMain,
     },
     background: {
-      default: "#ffff",
-      paper: "#f5f7fa",
+      default: commonColors.backgroundDefault,
+      paper: commonColors.backgroundPaper,
     },
     customBar: {
       actuals: "#A8C5DA",
@@ -25,25 +41,22 @@ export const lightTheme = createTheme({
       negative: "#f0f0f0",
     },
     customRevenue: {
-      chartLine: "#1976d2",
-      locationMarker: "#1976d2",
+      chartLine: commonColors.chartLine,
+      locationMarker: commonColors.locationMarker,
       mapFill: "#e0e0e0",
       mapStroke: "#bdbdbd",
     },
     customChartColors: ["#66bb6a", "#42a5f5", "#90caf9", "#333"],
     customTable: {
-      headerBackground: "#e0e0e0",
-      headerText: grey[800],
+      headerBackground: commonColors.headerBackground,
+      headerText: commonColors.headerText,
     },
   },
 });
 
+// Dark Theme
 export const darkTheme = createTheme({
-  typography: {
-    fontFamily: '"Inter", "Helvetica", "Arial", sans-serif',
-    fontSize: 14,
-    lineHeight: 1.43,
-  },
+  typography,
   palette: {
     mode: "dark",
     primary: {

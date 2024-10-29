@@ -7,16 +7,19 @@ const StatsCard = ({ title, value, change, positive }) => {
 
   return (
     <Card
+      role="status"
       sx={{
         p: 3,
         borderRadius: 3,
         bgcolor: positive
-          ? theme.palette.customStatsCard.positive
-          : theme.palette.customStatsCard.negative,
+          ? theme.palette.customStatsCard?.positive ||
+            theme.palette.success.light
+          : theme.palette.customStatsCard?.negative ||
+            theme.palette.error.light,
         boxShadow: 2,
         color: theme.palette.text.primary,
         height: "112px",
-        width: "220px",
+        width: { xs: "100%", sm: "220px" },
       }}
     >
       <Box
@@ -34,10 +37,7 @@ const StatsCard = ({ title, value, change, positive }) => {
         alignItems="center"
         mt={1}
       >
-        <Typography
-          variant="h4"
-          sx={{ fontWeight: "bold", fontWheight: "600", fontSize: "24px" }}
-        >
+        <Typography variant="h4" sx={{ fontWeight: "bold", fontSize: "24px" }}>
           {value}
         </Typography>
         <Typography

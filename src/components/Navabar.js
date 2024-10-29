@@ -32,16 +32,16 @@ const AppBarComponent = ({
     setSearchValue(event.target.value);
   };
 
-  // Extract and format the route path to display
-  const formatPath = (path) => {
+  // Format the route path to display a user-friendly path
+  const formatPath = React.useCallback((path) => {
     return path
       .split("/")
-      .filter(Boolean) // Remove empty parts
+      .filter(Boolean)
       .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
       .join(" / ");
-  };
+  }, []);
 
-  const currentRoute = formatPath(location.pathname);
+  const currentRoute = formatPath(location.pathname) || "Dashboard / Default";
 
   return (
     <AppBar
@@ -61,7 +61,7 @@ const AppBarComponent = ({
             edge="start"
             color="inherit"
             onClick={toggleSidebar}
-            aria-label="menu"
+            aria-label="Open sidebar"
           >
             <MenuIcon />
           </IconButton>
@@ -78,12 +78,12 @@ const AppBarComponent = ({
             <IconButton
               edge="start"
               color="inherit"
-              aria-label="favorites"
+              aria-label="Favorites"
               sx={{ mr: 1 }}
             >
               <StarBorder />
             </IconButton>
-            {currentRoute || "dashboard / default"}
+            {currentRoute}
           </Typography>
         </Box>
         <Box
@@ -91,13 +91,13 @@ const AppBarComponent = ({
             display: "flex",
             alignItems: "center",
             backgroundColor: isDarkMode ? "#555" : "#f5f5f5",
-            borderRadius: "8px",
+            borderRadius: 1,
             padding: "4px 10px",
             flexGrow: 1,
             maxWidth: "300px",
-            marginLeft: 2,
-            marginRight: 2,
+            marginX: 2,
           }}
+          role="search"
         >
           <SearchIcon
             fontSize="small"
@@ -117,14 +117,22 @@ const AppBarComponent = ({
           />
         </Box>
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          <IconButton color="inherit" onClick={handleThemeChange}>
+          <IconButton
+            color="inherit"
+            onClick={handleThemeChange}
+            aria-label="Toggle theme"
+          >
             {isDarkMode ? (
               <BrightnessHigh fontSize="small" />
             ) : (
               <BrightnessLow fontSize="small" />
             )}
           </IconButton>
-          <IconButton color="inherit" onClick={toggleNotificationDrawer}>
+          <IconButton
+            color="inherit"
+            onClick={toggleNotificationDrawer}
+            aria-label="Open notifications"
+          >
             <Badge badgeContent={unreadNotifications} color="error">
               <NotificationsIcon />
             </Badge>

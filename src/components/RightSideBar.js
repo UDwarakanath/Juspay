@@ -8,6 +8,7 @@ import {
   ListItemAvatar,
   ListItemText,
   Divider,
+  useTheme,
 } from "@mui/material";
 import BugReportIcon from "@mui/icons-material/BugReport";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
@@ -15,22 +16,22 @@ import SubscriptionIcon from "@mui/icons-material/Subscriptions";
 
 const notifications = [
   {
-    icon: <BugReportIcon />,
+    icon: <BugReportIcon aria-label="Bug Report" />,
     text: "You have a bug that needs...",
     time: "Just now",
   },
   {
-    icon: <PersonAddIcon />,
+    icon: <PersonAddIcon aria-label="New User Registered" />,
     text: "New user registered",
     time: "59 minutes ago",
   },
   {
-    icon: <BugReportIcon />,
+    icon: <BugReportIcon aria-label="Bug Report" />,
     text: "You have a bug that needs...",
     time: "12 hours ago",
   },
   {
-    icon: <SubscriptionIcon />,
+    icon: <SubscriptionIcon aria-label="Subscription" />,
     text: "Andi Lane subscribed to you",
     time: "Today, 11:59 AM",
   },
@@ -90,41 +91,56 @@ const contacts = [
     name: "Koray Okumus",
   },
 ];
-const ListSection = ({ title, items, isContactList = false }) => (
-  <Box sx={{ mb: 2 }}>
-    <Typography variant="subtitle1" sx={{ fontWeight: "bold", mb: 1 }}>
-      {title}
-    </Typography>
-    <List>
-      {items.map((item, index) => (
-        <React.Fragment key={index}>
-          <ListItem alignItems="flex-start">
-            {isContactList ? (
+
+const ListSection = React.memo(({ title, items, isContactList = false }) => {
+  const theme = useTheme();
+
+  return (
+    <Box sx={{ mb: 2 }}>
+      <Typography variant="subtitle1" sx={{ fontWeight: "bold", mb: 1 }}>
+        {title}
+      </Typography>
+      <List>
+        {items.map((item, index) => (
+          <React.Fragment key={index}>
+            <ListItem alignItems="flex-start">
               <ListItemAvatar>
-                <Avatar src={item.avatar} />
+                {isContactList ? (
+                  <Avatar src={item.avatar} />
+                ) : item.icon ? (
+                  item.icon
+                ) : (
+                  <Avatar src={item.avatar} />
+                )}
               </ListItemAvatar>
-            ) : (
-              <ListItemAvatar>
-                {item.avatar ? <Avatar src={item.avatar} /> : item.icon}
-              </ListItemAvatar>
+              <ListItemText
+                primary={isContactList ? item.name : item.text}
+                secondary={!isContactList && item.time}
+              />
+            </ListItem>
+            {index < items.length - 1 && (
+              <Divider
+                variant="inset"
+                component="li"
+                sx={{ borderColor: theme.palette.divider }}
+              />
             )}
-            <ListItemText
-              primary={isContactList ? item.name : item.text}
-              secondary={!isContactList && item.time}
-            />
-          </ListItem>
-          {index < items.length - 1 && (
-            <Divider variant="inset" component="li" />
-          )}
-        </React.Fragment>
-      ))}
-    </List>
-  </Box>
-);
+          </React.Fragment>
+        ))}
+      </List>
+    </Box>
+  );
+});
 
 const RightSidebar = () => (
   <Box
-    sx={{ width: 500, p: 2, borderLeft: "1px solid #ddd", overflowY: "auto" }}
+    sx={{
+      width: 500,
+      p: 2,
+      borderLeft: "1px solid",
+      borderColor: "divider",
+      overflowY: "auto",
+    }}
   >
     <ListSection title="Notifications" items={notifications} />
     <ListSection title="Activities" items={activities} />

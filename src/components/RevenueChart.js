@@ -9,6 +9,7 @@ import {
   CartesianGrid,
 } from "recharts";
 import { Box, Typography, useTheme } from "@mui/material";
+
 const data = [
   { name: "Jan", current: 10, previous: 15 },
   { name: "Feb", current: 15, previous: 10 },
@@ -17,6 +18,7 @@ const data = [
   { name: "May", current: 19, previous: 16 },
   { name: "Jun", current: 21, previous: 18 },
 ];
+
 const calculateChange = (current, previous) => {
   if (previous === 0) return 0;
   return (((current - previous) / previous) * 100).toFixed(2);
@@ -48,6 +50,7 @@ const RevenueChart = () => {
           Revenue
         </Typography>
       </Box>
+
       <Box display="flex" alignItems="center" gap={2} mb={2}>
         <Box display="flex" alignItems="center">
           <Box
@@ -107,7 +110,9 @@ const RevenueChart = () => {
               fontSize: 12,
               fontFamily: theme.typography.fontFamily,
             }}
-            tickFormatter={(value) => `${value}M`}
+            tickFormatter={(value) =>
+              value >= 1000 ? `${value / 1000}K` : `${value}M`
+            }
             axisLine={{
               stroke: theme.palette.customTable.headerBackground,
               strokeWidth: 0.5,
