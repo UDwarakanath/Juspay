@@ -37,7 +37,7 @@ const useNotificationDrawer = () => {
 
 // Custom hook to manage sidebar state
 const useSidebarToggle = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const toggleSidebar = useCallback(() => {
     setIsOpen((prev) => !prev);
   }, []);
