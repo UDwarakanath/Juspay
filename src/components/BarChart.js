@@ -1,4 +1,3 @@
-// src/components/ProjectionsBarChart.js
 import React from "react";
 import {
   BarChart,
