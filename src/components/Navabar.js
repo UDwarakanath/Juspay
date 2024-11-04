@@ -32,7 +32,6 @@ const AppBarComponent = ({
     setSearchValue(event.target.value);
   };
 
-  // Format the route path to display a user-friendly path
   const formatPath = React.useCallback((path) => {
     return path
       .split("/")

@@ -20,7 +20,7 @@ const locations = [
   { name: "Singapore", revenue: 61000, coordinates: [103.8198, 1.3521] },
 ];
 
-const REVENUE_CAP = 100000; // Revenue cap for progress calculation
+const REVENUE_CAP = 100000;
 const geoUrl =
   "https://naturalearth.s3.amazonaws.com/110m_cultural/ne_110m_admin_0_countries.geojson";
 

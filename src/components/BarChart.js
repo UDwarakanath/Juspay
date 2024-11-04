@@ -70,8 +70,8 @@ function ProjectionsBarChart() {
                 stackId="a"
                 fill={theme.palette.customBar.projections}
                 opacity={0.7}
-                barSize={25} // Ensure both bars have the same width of 25 pixels
-                radius={[5, 5, 0, 0]} // Add rounded corners
+                barSize={25}
+                radius={[5, 5, 0, 0]}
               />
             </BarChart>
           </ResponsiveContainer>

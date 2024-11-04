@@ -200,7 +200,7 @@ const Sidebar = () => {
       >
         <Avatar
           alt="ByeWind"
-          src="/path/to/profile-picture.jpg"
+          src="https://randomuser.me/api/portraits/men/1.jpg"
           sx={{ width: 40, height: 40, mr: 2 }}
         />
         <Typography variant="body1" fontWeight="bold">
